@@ -13,9 +13,11 @@
     --accent-color: #0077ff;       /* Keep a vibrant blue */
     --hover-color: #0055cc;       /* Darker blue on hover */
     --shadow-color: rgba(0, 0, 0, 0.03); /* Even subtler shadow */
-    --nav-height: 60px; /* Slightly smaller */
+    --nav-height: auto; /* Allow height to adjust based on content */
+    --nav-padding-vertical: 1rem; /* Control vertical padding */
     --border-radius: 6px; /* Even smaller radius */
     --accent-rgb: 0, 119, 255; /* RGB for accent color for rgba() */
+    --nav-bg-scrolled: rgba(253, 253, 253, 0.9); /* Slightly more opaque */
 }
 
 [data-theme="dark"] {
@@ -32,6 +34,7 @@
     --hover-color: #5caaff;       /* Even lighter blue */
     --shadow-color: rgba(0, 0, 0, 0.15);/* Slightly more visible shadow in dark */
     --accent-rgb: 51, 145, 255; /* RGB for dark theme accent */
+    --nav-bg-scrolled: rgba(26, 26, 26, 0.9); /* Slightly more opaque */
 }
 
 * {
@@ -55,17 +58,18 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- Sticky Navigation - Ultra Minimalist --- */
+/* --- Sticky Navigation - Final --- */
 .sticky-nav {
     position: sticky;
     top: 0;
     left: 0;
     width: 100%;
-    height: var(--nav-height);
+    height: auto; /* Let height be determined by content + padding */
+    min-height: 65px; /* Ensure minimum height */
+    padding: var(--nav-padding-vertical) 1.25rem; /* Use variable padding */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1.5rem; /* Consistent padding */
+    justify-content: space-between; /* Keep space-between for alignment */
+    align-items: center; /* Align items vertically */
     background-color: transparent; 
     backdrop-filter: blur(5px); /* Less intense blur */
     -webkit-backdrop-filter: blur(5px);
@@ -75,90 +79,107 @@ body {
 }
 
 .sticky-nav.scrolled {
-     /* height: var(--nav-height); // No height change */
-     background-color: var(--nav-bg); 
-     /* box-shadow: none; // Remove shadow */
+     background-color: var(--nav-bg-scrolled); /* Use new scrolled variable */
      border-color: var(--border-color); 
 }
 
 .nav-brand {
-    transition: none; /* No transition needed */
+    transition: none; 
+    text-align: center; 
+    flex-grow: 1; 
+    margin-right: 0; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 0.4rem; /* Increased gap slightly */
 }
 
 .sticky-nav.scrolled .nav-brand {
-     transform: none; /* No scale effect */
+     transform: none; 
 }
 
 .nav-brand h1 {
-    font-size: 1.25rem; /* Slightly smaller */
-    font-weight: 500; /* Lighter weight */
+    font-size: 1.8rem; 
+    font-weight: 600; 
     color: var(--primary-color);
     margin: 0;
+    margin-bottom: 0.2rem; /* Add space below h1 */
     transition: color 0.3s ease;
 }
 
-/* Ensure subtitle remains hidden on smaller screens */
+/* Social links within Nav */
+.social-nav {
+    display: flex;
+    flex-direction: row; /* Force row direction */
+    justify-content: center; /* Center items within the row */
+    align-items: center; /* Vertically align items */
+    gap: 1.2rem; 
+    margin-top: 0.2rem; /* Add small margin from H1 */
+    width: 100%; /* Allow it to take full width for centering */
+    flex-wrap: wrap; /* Allow wrapping ONLY if absolutely necessary */
+    /* Remove overflow and scrollbar styles */
+    /* overflow-x: auto; */
+    /* scrollbar-width: none; */
+}
+/* .social-nav::-webkit-scrollbar { display: none; } */
+
+.social-nav a {
+    color: var(--light-text); /* Lighter color */
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-shrink: 0; /* Prevent links from shrinking */
+}
+.social-nav a:hover {
+    color: var(--accent-color);
+}
+.social-nav i {
+     font-size: 1rem;
+}
+
+/* Ensure subtitle remains visible */
 .nav-subtitle {
-    font-size: 0.7rem;
+    font-size: 0.8rem; 
     font-family: 'Space Mono', monospace;
     color: var(--light-text);
-    margin-top: 0.1rem;
-    /* display: none; // REMOVED - Make subtitle always visible */
+    margin-top: 0.4rem; /* Add space above subtitle */
     transition: color 0.3s ease;
-    line-height: 1.2; /* Add line-height for wrapping */
-    max-width: 100%; /* Prevent overflow */
+    line-height: 1.4;
+    max-width: 95%; /* Adjusted max-width slightly */
 }
+
+/* Style ALL links within the subtitle consistently */
+.nav-subtitle a {
+    color: inherit; 
+    text-decoration: none; 
+    font-weight: 600; /* Increased weight for emphasis */
+    transition: color 0.2s ease;
+    margin: 0 1px; 
+}
+.nav-subtitle a:hover {
+    color: var(--accent-color);
+    text-decoration: none; /* Ensure no underline on hover */
+}
+/* Remove specific dark mode color for consistency */
+/* [data-theme="dark"] .nav-subtitle a { ... } */
 
 .nav-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem; /* Keep reduced gap */
+    align-self: flex-start; /* Align toggle to top */
+    margin-top: calc(var(--nav-padding-vertical) / 2); /* Adjust alignment */
+    min-width: 32px; /* Keep min-width */
 }
 
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 0.5rem; /* Keep reduced gap */
-    perspective: none; /* Remove perspective */
-}
-
-.nav-link {
-    color: var(--secondary-color); 
-    text-decoration: none;
-    font-size: 0.85rem; /* Slightly smaller */
-    font-weight: 500;
-    padding: 0.4rem 0.6rem; 
-    border-radius: var(--border-radius); 
-    transition: color 0.2s ease, background-color 0.2s ease; /* Faster, simpler transition */
-    position: relative;
-    z-index: 1;
-    overflow: visible; /* Allow potential minimal indicators */
-}
-
-/* Remove Pill background effect */
-/* .nav-link::before { ... removed ... } */
-
-/* Simplified Text color change on hover/active */
-.nav-link:hover {
-    color: var(--accent-color);
-    background-color: rgba(var(--accent-rgb), 0.08); /* Subtle background */
-    transform: none; /* No lift */
-}
-
-.nav-link.active {
-    color: var(--accent-color);
-    font-weight: 500; /* Same weight as normal */
-    background-color: rgba(var(--accent-rgb), 0.12); /* Slightly stronger bg for active */
-}
-
-/* Theme Toggle - Minimal */
+/* Theme Toggle - Discreet but Larger */
 .theme-toggle {
     position: relative;
     background: transparent;
     border: none;
     border-radius: 50%;
-    width: 30px; /* Smaller */
-    height: 30px;
+    width: 32px; /* Larger size */
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -168,12 +189,12 @@ body {
 }
 
 .theme-toggle:hover {
-    transform: scale(1.1); /* Simple scale */
+    transform: scale(1.15); /* Slightly more scale */
     color: var(--accent-color);
 }
 
 .theme-toggle i {
-    font-size: 0.9rem; 
+    font-size: 1rem; /* Larger icon */
     transition: transform 0.4s ease; /* Keep rotation */
 }
 
@@ -185,123 +206,128 @@ body[data-theme="light"] .theme-toggle i {
      transform: rotate(0deg);
 }
 
-/* Mobile Navigation Toggle - Minimal */
-.mobile-nav-toggle {
-    display: none; 
-    background: none;
-    border: none;
-    font-size: 1.3rem; /* Keep size */
-    color: var(--secondary-color); /* Match link color */
-    cursor: pointer;
-    padding: 5px;
-    transition: color 0.2s ease;
-}
-.mobile-nav-toggle:hover {
-    color: var(--accent-color);
-    transform: none; /* No scale */
-}
-
 /* --- Main Content Wrapper --- */
 .content-wrapper {
-    max-width: 900px; /* Narrower for focus */
-    margin: 3rem auto; /* More vertical spacing */
+    max-width: 750px; 
+    margin: 6rem auto 3rem auto; /* Further increased top margin */
     padding: 0 1rem;
     display: flex;
     flex-direction: column;
-    gap: 2.5rem; /* More space between cards */
+    gap: 0; /* Remove gap completely */
 }
 
-/* --- Content Cards --- */
-.content-card {
-    background: var(--section-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 2rem 2.5rem; /* More padding */
-    box-shadow: 0 5px 15px var(--shadow-color); /* Subtle shadow */
-    /* Animation properties */
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s cubic-bezier(0.645, 0.045, 0.355, 1), /* Smoother ease */
-                transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1),
-                border-color 0.3s ease,
-                background-color 0.4s ease;
+/* --- Content Sections (No Cards, Minimal Spacing) --- */
+.content-card { 
+    background: none; 
+    border: none; 
+    border-radius: 0; 
+    padding: 0; 
+    box-shadow: none; 
+    opacity: 1; 
+    transform: none; 
+    transition: none; 
+    /* Add subtle separator between sections */
+    &:last-child {
+        border-bottom: none;
+    }
+    /* border-bottom: 1px solid var(--border-color); // Keep border */
 }
 
-/* Card Hover */
-.content-card:hover {
-   border-color: var(--accent-color); 
-   /* transform: translateY(-2px); Optional subtle lift */
-}
-
-/* Animation trigger class */
-.content-card.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* --- Accordion Styles --- */
+/* --- Section Header (Minimal Padding) --- */
 .section-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    /* Remove bottom border from title style */
-    /* border-bottom: 1px solid var(--border-color); */ 
-    /* padding-bottom: 0.8rem; */
+    padding: 0.1rem 0; /* Very minimal vertical padding */
+    margin: 0;
+    border: none;
+    transition: none; 
+}
+
+/* Hover effect remains */
+.section-header:hover .section-title,
+.section-header:hover .toggle-btn {
+    color: var(--accent-color);
 }
 
 .section-title {
-    /* Adjustments for accordion */
-    margin-bottom: 0; /* Remove bottom margin */
-    border-bottom: none; /* Remove border */
-    padding-bottom: 0; /* Remove padding */
-    display: block; 
+    font-family: 'Inter', sans-serif; 
+    font-size: 1.1rem; /* Slightly smaller */
+    font-weight: 500; /* Slightly lighter */
+    color: var(--primary-color);
+    margin: 0;
+    padding: 0;
+    border: none;
     position: relative;
+    transition: color 0.2s ease; 
+    text-transform: none; 
+    letter-spacing: normal; 
 }
 
-/* Remove accent dot for accordion titles */
-/* .section-title::before { ... removed or commented ... } */
-
+/* --- Toggle Button Styles --- */
 .toggle-btn {
-    font-size: 1rem; /* Adjust size */
+    font-size: 0.9rem; /* Slightly smaller */
     color: var(--light-text);
-    transition: transform 0.3s ease;
-    padding: 0.5rem; /* Add padding for easier click */
+    transition: transform 0.3s ease, color 0.2s ease;
+    padding: 0.25rem 0.5rem; /* Adjust padding */
+    margin-left: auto; /* Push to right */
 }
 
 .toggle-btn.active {
     transform: rotate(180deg);
 }
 
+/* --- Section Content (Accordion Behaviour) --- */
 .section-content {
-    /* Default hidden state */
-    overflow: hidden;
-    max-height: 0;
-    opacity: 0;
-    padding-top: 0; /* Ensure no top padding when closed */
-    padding-bottom: 0; /* Ensure no bottom padding when closed */
-    margin-top: 0; /* Ensure no top margin when closed */
-    transition: max-height 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), 
-                opacity 0.4s ease-in-out,
-                padding-top 0.5s ease, 
-                padding-bottom 0.5s ease,
-                margin-top 0.5s ease;
-    /* visibility: hidden; // Alternative hiding method */
+    overflow: hidden; 
+    max-height: 0; 
+    opacity: 0; 
+    padding-left: 0.5rem; 
+    padding-right: 0.5rem;
+    margin-top: 0; 
+    padding-top: 0; /* Ensure no padding when closed */
+    padding-bottom: 0; /* Ensure no padding when closed */
+    transition: max-height 0.35s ease-out, 
+                opacity 0.25s ease-in-out, 
+                margin-top 0.35s ease-out, 
+                padding-top 0.35s ease-out, 
+                padding-bottom 0.35s ease-out,
+                visibility 0s linear 0.35s; /* Delay visibility change */
+    visibility: hidden; 
 }
 
 .section-content.active {
-    /* Visible state */
+    max-height: 2000px; 
     opacity: 1;
-    max-height: 2000px; /* Arbitrary large height */
-    /* visibility: visible; */
-    padding-top: 1.5rem; /* Restore padding */
-    padding-bottom: 0.5rem; /* Add some bottom padding */
-    margin-top: 1rem; /* Add margin between header and content */
-    border-top: 1px solid var(--border-color); /* Separator line */
+    margin-top: 0.5rem; 
+    padding-top: 0.25rem; 
+    padding-bottom: 1.25rem; 
+    visibility: visible; 
+    transition: max-height 0.35s ease-out, 
+                opacity 0.25s ease-in-out, 
+                margin-top 0.35s ease-out, 
+                padding-top 0.35s ease-out, 
+                padding-bottom 0.35s ease-out,
+                visibility 0s linear 0s; /* Change visibility immediately */
 }
 
-/* Remove previous visibility class */
-/* .content-card.visible .section-title::before { ... } */
+/* Adjust spacing within content */
+.section-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+.skill-category, .timeline-item, .project-list li, .reading-list > li {
+    margin-bottom: 1.5rem;
+}
+
+.skill-category h3, .timeline-item h3, .project-list h3, .reading-list h3 {
+    font-family: 'Inter', sans-serif; 
+    color: var(--secondary-color);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
 
 /* General Paragraph Styling */
 p {
@@ -315,13 +341,6 @@ p:last-child {
 }
 
 /* Specific Section Styling Adjustments */
-.skill-category h3, .timeline-item h3, .project-list h3, .reading-list h3 {
-    color: var(--primary-color);
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-}
-
 .skill-category p, .timeline-item p, .reading-category li {
     color: var(--light-text);
     font-size: 0.95rem;
@@ -418,11 +437,144 @@ p:last-child {
     left: 0;
 }
 
+/* Style the new focus list */
+.focus-list {
+    list-style: none; /* Remove default bullets */
+    padding-left: 0.5rem; /* Indent slightly */
+    margin-top: 0.5rem;
+}
 
-/* Contact Links */
+.focus-list li {
+    margin-bottom: 0.5rem; /* Space between items */
+    position: relative;
+    padding-left: 1rem; /* Space for custom marker */
+}
+
+/* Custom marker (e.g., a dash or arrow) */
+.focus-list li::before {
+    content: "→"; /* Use an arrow or other symbol */
+    position: absolute;
+    left: 0;
+    top: 1px; /* Adjust vertical alignment */
+    color: var(--accent-color);
+}
+
+/* Style Freelance list items */
+.service-item {
+    color: var(--text-color); /* Ensure default text color */
+    /* Remove potential list-style if inherited strangely */
+    /* list-style-type: none; */ 
+}
+
+/* --- Responsive Design --- */
+@media (min-width: 768px) {
+    .section-header {
+         padding: 0.2rem 0; /* Minimal desktop padding */
+    }
+    .section-title {
+         font-size: 1.2rem; /* Adjust desktop size */
+    }
+}
+
+@media (max-width: 900px) { 
+    .sticky-nav {
+        padding: var(--nav-padding-vertical) 1rem; /* Adjust padding */
+    }
+    .nav-brand {
+         text-align: center; /* Keep centered on tablet */
+    }
+    .nav-brand h1 {
+        font-size: 1.6rem; /* Adjust size */
+    }
+    .nav-subtitle {
+        font-size: 0.75rem; /* Adjust size */
+    }
+    .social-nav a {
+         font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 600px) {
+     .sticky-nav {
+        padding: var(--nav-padding-vertical) 1rem; /* Adjust padding */
+     }
+     .nav-brand {
+         /* Keep centered */
+         margin-right: 0; 
+         text-align: center; 
+         flex-grow: 1; 
+         gap: 0.3rem; /* Adjust gap */
+     }
+     .nav-brand h1 {
+         font-size: 1.6rem; /* Adjusted mobile H1 size */
+         margin-bottom: 0.1rem;
+     }
+     .nav-subtitle {
+        font-size: 0.7rem; 
+        margin-top: 0.3rem;
+        max-width: 98%; /* Adjust max-width */
+     }
+     .social-nav {
+        gap: 1rem; /* Adjust gap for mobile */
+        justify-content: center;
+        flex-wrap: wrap; /* Allow wrap on small screens */
+     }
+     .social-nav a {
+         font-size: 0.7rem;
+     }
+     .nav-controls {
+         margin-top: calc(var(--nav-padding-vertical) / 3); /* Adjust toggle alignment */
+     }
+     .content-wrapper {
+        margin: 3rem auto 2rem auto; /* Keep tighter top margin on mobile */
+        gap: 0; /* Ensure no gap */
+     }
+     .section-header {
+        padding: 0.05rem 0; /* Extremely tight padding on mobile */
+     }
+     .section-title {
+         font-size: 1rem; 
+     }
+     .toggle-btn {
+         font-size: 0.8rem; /* Smaller toggle */
+         padding: 0.2rem 0.4rem;
+     }
+     .section-content.active {
+        margin-top: 0.4rem; /* Tighter space */
+        padding-top: 0.2rem;
+        padding-bottom: 1rem;
+     }
+    .content-card {
+        padding: 1.5rem;
+        border-radius: calc(var(--border-radius) - 2px); /* Slightly less radius */
+    }
+    .skill-category h3, .timeline-item h3, .project-list h3, .reading-list h3 {
+        font-size: 1rem;
+    }
+}
+
+/* Cleanup potentially conflicting old styles (ensure comments if removing) */
+/* .tech-project { ... } */ 
+/* .tech-project .project-list { ... } */
+/* .tech-project .project-list li { ... } */
+/* .tech-project .project-list li::before { ... } */
+/* .tech-project h3 { ... } */ 
+/* .section-content h3 { ... } */
+/* .current-focus { ... } */
+
+/* Ensure the border rule from previous steps is present if needed for separation */
+.content-card {
+    border-bottom: 1px solid var(--border-color); 
+}
+.content-card:last-child {
+    border-bottom: none;
+}
+
+/* REMOVED Contact Links styles */
+/* 
 .links-container {
     display: flex;
-    flex-direction: column; /* Stack vertically */
+    flex-direction: column; 
     gap: 1rem;
 }
 .links-container a {
@@ -430,7 +582,7 @@ p:last-child {
     font-size: 1rem;
     text-decoration: none;
     transition: color 0.25s ease;
-    display: inline-flex; /* Align icon and text */
+    display: inline-flex; 
     align-items: center;
     gap: 0.6rem;
 }
@@ -444,6 +596,7 @@ p:last-child {
 .links-container a:hover i {
     color: var(--accent-color);
 }
+*/
 
 /* Footer */
 footer {
@@ -455,121 +608,4 @@ footer {
     font-size: 0.85rem;
     border-top: 1px solid var(--border-color);
 }
-
-/* --- Responsive Design --- */
-@media (min-width: 768px) {
-    /* .nav-subtitle { 
-        display: block;  // REMOVED - Subtitle is now always visible
-    } */
-    .section-title::before { /* Only show accent dot on larger screens */
-       left: -2.5rem; 
-    }
-     .content-card {
-        padding: 2.5rem 3rem;
-    }
-}
-
-@media (max-width: 900px) { 
-    .sticky-nav {
-        padding: 0 1rem; /* Adjust padding for mobile */
-    }
-    /* Mobile Navigation */
-    .mobile-nav-toggle {
-        display: block; 
-    }
-    .nav-controls {
-        gap: 0.5rem; /* Tighter gap */
-    }
-    .nav-links {
-        display: none; 
-        position: absolute;
-        top: var(--nav-height); /* Use variable */
-        left: 0; 
-        right: 0; 
-        background-color: var(--section-bg); 
-        width: 100%; 
-        flex-direction: column;
-        padding: 0.5rem 0; /* Reduced padding */
-        border-bottom: 1px solid var(--border-color);
-        box-shadow: 0 6px 15px var(--shadow-color); /* Keep subtle shadow */
-        /* Smoother Animation */
-        transform-origin: top center;
-        transform: translateY(-10px);
-        opacity: 0;
-        pointer-events: none;
-        transition: transform 0.25s ease, opacity 0.25s ease; /* Faster */
-    }
-    .nav-links.active {
-        display: flex; 
-        transform: translateY(0);
-        opacity: 1;
-        pointer-events: auto;
-    }
-    .nav-links li {
-        width: 100%;
-        text-align: center;
-    }
-    .nav-link {
-         display: block; 
-         padding: 0.7rem 1rem; /* Adjust padding */
-         border-radius: 0;
-         color: var(--text-color); 
-    }
-    .nav-link:hover {
-        /* Use same hover as active for mobile */
-        color: var(--accent-color);
-        background-color: rgba(var(--accent-rgb), 0.08); 
-        transform: none; 
-    }
-    .nav-link.active {
-        /* Keep consistent active style */
-        color: var(--accent-color);
-        font-weight: 500;
-        background-color: rgba(var(--accent-rgb), 0.12);
-    }
-}
-
-@media (max-width: 600px) {
-     .sticky-nav.scrolled {
-        /* height: var(--nav-height); // Ensure no height change */
-     }
-     .nav-brand h1 {
-         font-size: 1.15rem; /* Ensure enough space next to menu icon */
-     }
-     /* Reduce subtitle size on small screens */
-     .nav-subtitle {
-        font-size: 0.6rem;
-     }
-     .content-wrapper {
-        margin: 2rem auto;
-        gap: 2rem;
-    }
-    .content-card {
-        padding: 1.5rem;
-        border-radius: calc(var(--border-radius) - 2px); /* Slightly less radius */
-    }
-     .section-title {
-        font-size: 1.4rem;
-        margin-bottom: 1.5rem;
-        padding-bottom: 0.6rem;
-    }
-    .section-title::before { /* Hide accent dot on small screens */
-         display: none;
-    }
-    .skill-category h3, .timeline-item h3, .project-list h3, .reading-list h3 {
-        font-size: 1rem;
-    }
-     .links-container a {
-        font-size: 0.95rem;
-    }
-}
-
-/* Cleanup potentially conflicting old styles (ensure comments if removing) */
-/* .tech-project { ... } */ 
-/* .tech-project .project-list { ... } */
-/* .tech-project .project-list li { ... } */
-/* .tech-project .project-list li::before { ... } */
-/* .tech-project h3 { ... } */ 
-/* .section-content h3 { ... } */
-/* .current-focus { ... } */
 

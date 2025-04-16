@@ -89,34 +89,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-     // --- Section Fade-in Animation on Scroll (Simple Example) --- //
+    // --- Section Fade-in Animation on Scroll --- //
     const observerOptions = {
-        root: null, // relative to document viewport 
+        root: null, 
         rootMargin: '0px',
-        threshold: 0.1 // 10% visible
+        threshold: 0.1 
     };
-
     const observerCallback = (entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Optional: unobserve after animation
-                // observer.unobserve(entry.target); 
+                // observer.unobserve(entry.target); // Keep observing if needed
             }
-            // Optional: remove class if element scrolls out of view
-            // else {
-            //     entry.target.classList.remove('visible');
-            // }
         });
     };
-
     const sectionObserver = new IntersectionObserver(observerCallback, observerOptions);
-
     sections.forEach(section => {
         sectionObserver.observe(section);
     });
 
-    // --- Accordion Toggle --- //
+    // --- Accordion Toggle --- // 
     const sectionHeaders = document.querySelectorAll('.section-header');
 
     sectionHeaders.forEach(header => {
@@ -144,5 +136,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
 }); 
