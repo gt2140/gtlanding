@@ -1,0 +1,575 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* --- Light Theme --- */
+    --background-color: #fdfdfd; /* Slightly off-white */
+    --section-bg: #ffffff;       /* White cards */
+    --nav-bg: rgba(253, 253, 253, 0.8); /* Lighter semi-transparent */
+    --text-color: #222222;        /* Darker text for contrast */
+    --light-text: #555555;       /* Softer grey */
+    --border-color: #eeeeee;       /* Very subtle border */
+    --primary-color: #000000;     /* Primary headings/elements */
+    --secondary-color: #333333;   /* Secondary text/headings */
+    --accent-color: #0077ff;       /* Keep a vibrant blue */
+    --hover-color: #0055cc;       /* Darker blue on hover */
+    --shadow-color: rgba(0, 0, 0, 0.03); /* Even subtler shadow */
+    --nav-height: 60px; /* Slightly smaller */
+    --border-radius: 6px; /* Even smaller radius */
+    --accent-rgb: 0, 119, 255; /* RGB for accent color for rgba() */
+}
+
+[data-theme="dark"] {
+    /* --- Dark Theme --- */
+    --background-color: #111111; /* Near black */
+    --section-bg: #1a1a1a;       /* Dark grey cards */
+    --nav-bg: rgba(26, 26, 26, 0.8);  /* Darker semi-transparent */
+    --text-color: #e0e0e0;        /* Light grey text */
+    --light-text: #999999;       /* Medium grey */
+    --border-color: #2a2a2a;       /* Subtle dark border */
+    --primary-color: #ffffff;     /* White */
+    --secondary-color: #cccccc;   /* Light grey */
+    --accent-color: #3391ff;       /* Lighter blue for dark mode */
+    --hover-color: #5caaff;       /* Even lighter blue */
+    --shadow-color: rgba(0, 0, 0, 0.15);/* Slightly more visible shadow in dark */
+    --accent-rgb: 51, 145, 255; /* RGB for dark theme accent */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-height); 
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.7; /* Slightly increased line-height */
+    color: var(--text-color);
+    background-color: var(--background-color);
+    transition: background-color 0.4s ease, color 0.4s ease; /* Smoother transition */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Sticky Navigation - Ultra Minimalist --- */
+.sticky-nav {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5rem; /* Consistent padding */
+    background-color: transparent; 
+    backdrop-filter: blur(5px); /* Less intense blur */
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 1000;
+    border-bottom: 1px solid transparent; 
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Simplified transitions */
+}
+
+.sticky-nav.scrolled {
+     /* height: var(--nav-height); // No height change */
+     background-color: var(--nav-bg); 
+     /* box-shadow: none; // Remove shadow */
+     border-color: var(--border-color); 
+}
+
+.nav-brand {
+    transition: none; /* No transition needed */
+}
+
+.sticky-nav.scrolled .nav-brand {
+     transform: none; /* No scale effect */
+}
+
+.nav-brand h1 {
+    font-size: 1.25rem; /* Slightly smaller */
+    font-weight: 500; /* Lighter weight */
+    color: var(--primary-color);
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+/* Ensure subtitle remains hidden on smaller screens */
+.nav-subtitle {
+    font-size: 0.7rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--light-text);
+    margin-top: 0.1rem;
+    /* display: none; // REMOVED - Make subtitle always visible */
+    transition: color 0.3s ease;
+    line-height: 1.2; /* Add line-height for wrapping */
+    max-width: 100%; /* Prevent overflow */
+}
+
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* Keep reduced gap */
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 0.5rem; /* Keep reduced gap */
+    perspective: none; /* Remove perspective */
+}
+
+.nav-link {
+    color: var(--secondary-color); 
+    text-decoration: none;
+    font-size: 0.85rem; /* Slightly smaller */
+    font-weight: 500;
+    padding: 0.4rem 0.6rem; 
+    border-radius: var(--border-radius); 
+    transition: color 0.2s ease, background-color 0.2s ease; /* Faster, simpler transition */
+    position: relative;
+    z-index: 1;
+    overflow: visible; /* Allow potential minimal indicators */
+}
+
+/* Remove Pill background effect */
+/* .nav-link::before { ... removed ... } */
+
+/* Simplified Text color change on hover/active */
+.nav-link:hover {
+    color: var(--accent-color);
+    background-color: rgba(var(--accent-rgb), 0.08); /* Subtle background */
+    transform: none; /* No lift */
+}
+
+.nav-link.active {
+    color: var(--accent-color);
+    font-weight: 500; /* Same weight as normal */
+    background-color: rgba(var(--accent-rgb), 0.12); /* Slightly stronger bg for active */
+}
+
+/* Theme Toggle - Minimal */
+.theme-toggle {
+    position: relative;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 30px; /* Smaller */
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--light-text);
+    transition: color 0.2s ease, transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1); /* Simple scale */
+    color: var(--accent-color);
+}
+
+.theme-toggle i {
+    font-size: 0.9rem; 
+    transition: transform 0.4s ease; /* Keep rotation */
+}
+
+/* Keep icon rotation animation */
+body[data-theme="dark"] .theme-toggle i {
+     transform: rotate(180deg);
+}
+body[data-theme="light"] .theme-toggle i {
+     transform: rotate(0deg);
+}
+
+/* Mobile Navigation Toggle - Minimal */
+.mobile-nav-toggle {
+    display: none; 
+    background: none;
+    border: none;
+    font-size: 1.3rem; /* Keep size */
+    color: var(--secondary-color); /* Match link color */
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s ease;
+}
+.mobile-nav-toggle:hover {
+    color: var(--accent-color);
+    transform: none; /* No scale */
+}
+
+/* --- Main Content Wrapper --- */
+.content-wrapper {
+    max-width: 900px; /* Narrower for focus */
+    margin: 3rem auto; /* More vertical spacing */
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem; /* More space between cards */
+}
+
+/* --- Content Cards --- */
+.content-card {
+    background: var(--section-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 2rem 2.5rem; /* More padding */
+    box-shadow: 0 5px 15px var(--shadow-color); /* Subtle shadow */
+    /* Animation properties */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.645, 0.045, 0.355, 1), /* Smoother ease */
+                transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1),
+                border-color 0.3s ease,
+                background-color 0.4s ease;
+}
+
+/* Card Hover */
+.content-card:hover {
+   border-color: var(--accent-color); 
+   /* transform: translateY(-2px); Optional subtle lift */
+}
+
+/* Animation trigger class */
+.content-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- Accordion Styles --- */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    /* Remove bottom border from title style */
+    /* border-bottom: 1px solid var(--border-color); */ 
+    /* padding-bottom: 0.8rem; */
+}
+
+.section-title {
+    /* Adjustments for accordion */
+    margin-bottom: 0; /* Remove bottom margin */
+    border-bottom: none; /* Remove border */
+    padding-bottom: 0; /* Remove padding */
+    display: block; 
+    position: relative;
+}
+
+/* Remove accent dot for accordion titles */
+/* .section-title::before { ... removed or commented ... } */
+
+.toggle-btn {
+    font-size: 1rem; /* Adjust size */
+    color: var(--light-text);
+    transition: transform 0.3s ease;
+    padding: 0.5rem; /* Add padding for easier click */
+}
+
+.toggle-btn.active {
+    transform: rotate(180deg);
+}
+
+.section-content {
+    /* Default hidden state */
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0; /* Ensure no top padding when closed */
+    padding-bottom: 0; /* Ensure no bottom padding when closed */
+    margin-top: 0; /* Ensure no top margin when closed */
+    transition: max-height 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), 
+                opacity 0.4s ease-in-out,
+                padding-top 0.5s ease, 
+                padding-bottom 0.5s ease,
+                margin-top 0.5s ease;
+    /* visibility: hidden; // Alternative hiding method */
+}
+
+.section-content.active {
+    /* Visible state */
+    opacity: 1;
+    max-height: 2000px; /* Arbitrary large height */
+    /* visibility: visible; */
+    padding-top: 1.5rem; /* Restore padding */
+    padding-bottom: 0.5rem; /* Add some bottom padding */
+    margin-top: 1rem; /* Add margin between header and content */
+    border-top: 1px solid var(--border-color); /* Separator line */
+}
+
+/* Remove previous visibility class */
+/* .content-card.visible .section-title::before { ... } */
+
+/* General Paragraph Styling */
+p {
+    margin-bottom: 1.25rem; /* Slightly less margin */
+    line-height: 1.75;
+    color: var(--text-color);
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+/* Specific Section Styling Adjustments */
+.skill-category h3, .timeline-item h3, .project-list h3, .reading-list h3 {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.skill-category p, .timeline-item p, .reading-category li {
+    color: var(--light-text);
+    font-size: 0.95rem;
+}
+
+.project-list {
+    list-style: none;
+}
+.project-list li {
+    padding: 1rem 0;
+    border-bottom: 1px dashed var(--border-color);
+}
+.project-list li:last-child {
+    border-bottom: none;
+}
+
+.project-status {
+    font-size: 0.8rem;
+    font-style: normal;
+    color: var(--light-text);
+    margin-bottom: 0.3rem;
+    font-family: 'Space Mono', monospace;
+}
+
+.project-description {
+     margin: 0.5rem 0 1rem 0;
+     font-size: 0.95rem;
+     color: var(--secondary-color);
+}
+
+.project-link {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+.project-link:hover {
+     color: var(--hover-color);
+     text-decoration: underline;
+}
+
+/* Timeline Adjustments */
+.timeline {
+    padding-left: 0.5rem;
+    border-left: 1px solid var(--border-color);
+}
+.timeline::before {
+     display: none; /* Remove old line */
+}
+.timeline-item {
+     padding-left: 1.5rem; 
+     position: relative; /* Needed for pseudo-element */
+     margin-bottom: 1.5rem;
+}
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -5px; /* Position over the border */
+    top: 6px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--background-color); /* Match background */
+    border: 2px solid var(--accent-color);
+}
+
+/* Reading List Adjustments */
+.reading-list > li {
+    margin-bottom: 1.5rem;
+}
+.reading-category {
+    list-style: none;
+    padding-left: 0.5rem;
+    margin-top: 0.5rem;
+}
+.reading-category li {
+    margin-bottom: 0.3rem;
+    padding-left: 1rem;
+    position: relative;
+}
+/* Custom bullet */
+.reading-category li::before {
+    content: '\2022'; /* Bullet character */
+    color: var(--accent-color);
+    font-weight: bold;
+    display: inline-block; 
+    width: 1em;
+    margin-left: -1em;
+    position: absolute;
+    left: 0;
+}
+
+
+/* Contact Links */
+.links-container {
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+    gap: 1rem;
+}
+.links-container a {
+    color: var(--text-color);
+    font-size: 1rem;
+    text-decoration: none;
+    transition: color 0.25s ease;
+    display: inline-flex; /* Align icon and text */
+    align-items: center;
+    gap: 0.6rem;
+}
+.links-container a i {
+    color: var(--light-text);
+    transition: color 0.25s ease;
+}
+.links-container a:hover {
+    color: var(--accent-color);
+}
+.links-container a:hover i {
+    color: var(--accent-color);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin: 4rem auto 2rem auto; /* Centered margin */
+    padding: 1.5rem 1rem;
+    max-width: 900px;
+    color: var(--light-text);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* --- Responsive Design --- */
+@media (min-width: 768px) {
+    /* .nav-subtitle { 
+        display: block;  // REMOVED - Subtitle is now always visible
+    } */
+    .section-title::before { /* Only show accent dot on larger screens */
+       left: -2.5rem; 
+    }
+     .content-card {
+        padding: 2.5rem 3rem;
+    }
+}
+
+@media (max-width: 900px) { 
+    .sticky-nav {
+        padding: 0 1rem; /* Adjust padding for mobile */
+    }
+    /* Mobile Navigation */
+    .mobile-nav-toggle {
+        display: block; 
+    }
+    .nav-controls {
+        gap: 0.5rem; /* Tighter gap */
+    }
+    .nav-links {
+        display: none; 
+        position: absolute;
+        top: var(--nav-height); /* Use variable */
+        left: 0; 
+        right: 0; 
+        background-color: var(--section-bg); 
+        width: 100%; 
+        flex-direction: column;
+        padding: 0.5rem 0; /* Reduced padding */
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: 0 6px 15px var(--shadow-color); /* Keep subtle shadow */
+        /* Smoother Animation */
+        transform-origin: top center;
+        transform: translateY(-10px);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.25s ease, opacity 0.25s ease; /* Faster */
+    }
+    .nav-links.active {
+        display: flex; 
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+    }
+    .nav-link {
+         display: block; 
+         padding: 0.7rem 1rem; /* Adjust padding */
+         border-radius: 0;
+         color: var(--text-color); 
+    }
+    .nav-link:hover {
+        /* Use same hover as active for mobile */
+        color: var(--accent-color);
+        background-color: rgba(var(--accent-rgb), 0.08); 
+        transform: none; 
+    }
+    .nav-link.active {
+        /* Keep consistent active style */
+        color: var(--accent-color);
+        font-weight: 500;
+        background-color: rgba(var(--accent-rgb), 0.12);
+    }
+}
+
+@media (max-width: 600px) {
+     .sticky-nav.scrolled {
+        /* height: var(--nav-height); // Ensure no height change */
+     }
+     .nav-brand h1 {
+         font-size: 1.15rem; /* Ensure enough space next to menu icon */
+     }
+     /* Reduce subtitle size on small screens */
+     .nav-subtitle {
+        font-size: 0.6rem;
+     }
+     .content-wrapper {
+        margin: 2rem auto;
+        gap: 2rem;
+    }
+    .content-card {
+        padding: 1.5rem;
+        border-radius: calc(var(--border-radius) - 2px); /* Slightly less radius */
+    }
+     .section-title {
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.6rem;
+    }
+    .section-title::before { /* Hide accent dot on small screens */
+         display: none;
+    }
+    .skill-category h3, .timeline-item h3, .project-list h3, .reading-list h3 {
+        font-size: 1rem;
+    }
+     .links-container a {
+        font-size: 0.95rem;
+    }
+}
+
+/* Cleanup potentially conflicting old styles (ensure comments if removing) */
+/* .tech-project { ... } */ 
+/* .tech-project .project-list { ... } */
+/* .tech-project .project-list li { ... } */
+/* .tech-project .project-list li::before { ... } */
+/* .tech-project h3 { ... } */ 
+/* .section-content h3 { ... } */
+/* .current-focus { ... } */
+
